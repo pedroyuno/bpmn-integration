@@ -66,7 +66,7 @@
     <bpmn:sequenceFlow id="Flow_Merchant_Kickoff_Integration" sourceRef="Task_Merchant_KickoffParticipation" targetRef="Task_Merchant_Integration" />
     <bpmn:sequenceFlow id="Flow_Merchant_Integration_Gateway" sourceRef="Task_Merchant_Integration" targetRef="Gateway_Merchant_CertificationResult" />
     <bpmn:sequenceFlow id="Flow_Merchant_Adjustments" name="Needs adjustment" sourceRef="Gateway_Merchant_CertificationResult" targetRef="Task_Merchant_Adjustments" />
-    <bpmn:sequenceFlow id="Flow_Merchant_Retry" sourceRef="Task_Merchant_Adjustments" targetRef="Task_Merchant_Integration" />
+    <bpmn:sequenceFlow id="Flow_Merchant_Retry" sourceRef="Task_Merchant_Adjustments" targetRef="Task_IE_Certification" />
     <bpmn:sequenceFlow id="Flow_Merchant_GoLive" name="Approved" sourceRef="Gateway_Merchant_CertificationResult" targetRef="Task_Merchant_GoLive" />
   </bpmn:process>
 
@@ -254,9 +254,8 @@
       
       <bpmndi:BPMNEdge id="Flow_Merchant_Retry_di" bpmnElement="Flow_Merchant_Retry">
         <di:waypoint x="600" y="590" />
-        <di:waypoint x="500" y="590" />
-        <di:waypoint x="500" y="500" />
-        <di:waypoint x="550" y="500" />
+        <di:waypoint x="750" y="590" />
+        <di:waypoint x="750" y="330" />
       </bpmndi:BPMNEdge>
       
       <bpmndi:BPMNEdge id="Flow_Merchant_GoLive_di" bpmnElement="Flow_Merchant_GoLive">

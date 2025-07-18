@@ -56,18 +56,39 @@ Place all files in your web server directory and open either:
 
 ## 🏊‍♂️ Process Overview
 
-The BPMN diagram shows the merchant integration workflow with three main actors:
+Both BPMN diagrams show the merchant integration workflow with three main actors in separate pool lanes:
+
+### **🔧 Full BPMN Process (`merchant_integration_process.bpmn`)**
+**Complete detailed workflow with:**
+- Multiple start points across different actors
+- Intermediate "receive" and handoff tasks
+- Detailed message flows between all participants
+- Comprehensive event handling
+- Professional enterprise-grade BPMN structure
+
+**Flow:** SE Handover → IE Receives → IE Schedules Kickoff → Scope Validation → Integration Support → Certification Loop → Monitoring → TAM Handover
+
+### **⚡ Simplified BPMN Process (`merchant_integration_process_simple.bpmn`)**
+**Streamlined workflow focused on core actions:**
+- Single start point in Implementation Engineer lane
+- Direct action-oriented tasks without intermediate steps
+- Clear focus on IE responsibilities and decision points
+- Simplified certification loop (adjustments go directly back to certification)
+- Clean, easy-to-follow process flow
+
+**Flow:** Start → IE Kickoff & Scope Validation → IE Integration Support → IE Certification → (if adjustments needed: back to certification) → IE Monitoring → IE TAM Handover
+
+## 👥 **Actor Responsibilities**
 
 ### **Sales Engineer (SE)**
 - Initiates the process
 - Schedules handover with Implementation Engineer
 - Sends merchant scope information
 
-### **Implementation Engineer (IE)**
-- Receives handover from SE
+### **Implementation Engineer (IE)** ⭐ *Main Process Owner*
 - Schedules and conducts kickoff meeting
 - Validates scope with merchant
-- Supports integration development
+- Supports integration development **(IE handles integration)**
 - Handles certification process
 - Monitors for 30 days post go-live
 - Hands over to TAM team
@@ -79,10 +100,21 @@ The BPMN diagram shows the merchant integration workflow with three main actors:
 - Makes adjustments if needed
 - Goes live when approved
 
-## 🔄 Key Process Flow
+## 🔄 Key Differences Between Versions
+
+| Feature | **Full BPMN** 🔧 | **Simple BPMN** ⚡ |
+|---------|------------------|-------------------|
+| **Start Points** | Multiple (SE, IE, Merchant) | Single (IE only) |
+| **Task Detail** | Complete with receive/send tasks | Action-focused, no intermediate steps |
+| **Certification Loop** | Merchant adjusts → resubmits integration | Merchant adjusts → IE re-certifies directly |
+| **Message Flows** | Comprehensive cross-lane communication | Streamlined essential communication |
+| **Use Case** | Documentation, enterprise implementation | Training, quick reference, simplified view |
+| **Complexity** | High - enterprise grade | Low - easy to understand |
+
+## 🔄 Core Process Flow
 
 1. **Handover** - SE to IE with merchant scope
-2. **Kickoff** - IE schedules meeting with merchant
+2. **Kickoff** - IE schedules meeting with merchant  
 3. **Scope Validation** - If invalid, loops back to handover
 4. **Integration** - Merchant develops with IE support
 5. **Certification Loop** - IE certifies, merchant adjusts if needed
