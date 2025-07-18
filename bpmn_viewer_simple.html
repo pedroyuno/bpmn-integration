@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Merchant Integration Process - Simple BPMN Viewer</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        
+        .header h1 {
+            margin: 0;
+            color: #2c3e50;
+        }
+        
+        .header p {
+            margin: 5px 0;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .version-toggle {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .version-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 0 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .version-btn:hover {
+            background: #218838;
+        }
+        
+        .version-btn.active {
+            background: #007bff;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        #canvas {
+            height: 70vh;
+            width: 100%;
+            border: none;
+        }
+        
+        .controls {
+            padding: 15px;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            text-align: center;
+        }
+        
+        .btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            margin: 0 5px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .btn:hover {
+            background: #0056b3;
+        }
+        
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 70vh;
+            font-size: 18px;
+            color: #666;
+        }
+        
+        .error {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 70vh;
+            font-size: 16px;
+            color: #dc3545;
+            text-align: center;
+        }
+
+        .legend {
+            padding: 15px;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .legend h4 {
+            margin: 0 0 10px 0;
+            color: #333;
+        }
+
+        .simplified-features {
+            background: #e8f5e8;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+
+        .simplified-features h5 {
+            margin: 0 0 5px 0;
+            color: #155724;
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+            margin: 5px 0;
+        }
+
+        .feature-list li {
+            margin: 3px 0;
+            padding-left: 15px;
+            position: relative;
+        }
+
+        .feature-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #28a745;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Merchant Integration Process - Simplified</h1>
+        <p>BPMN Workflow Visualization - Focused on Implementation Engineer Responsibilities</p>
+        <p><strong>Actors:</strong> Sales Engineer (SE) | Implementation Engineer (IE) | Merchant</p>
+    </div>
+
+    <div class="version-toggle">
+        <a href="bpmn_viewer.html" class="version-btn">Full BPMN</a>
+        <a href="bpmn_viewer_simple.html" class="version-btn active">Simple BPMN</a>
+    </div>
+
+    <div class="container">
+        <div id="canvas" class="loading">
+            Loading simplified BPMN diagram...
+        </div>
+        
+        <div class="controls">
+            <button class="btn" onclick="zoomIn()">Zoom In</button>
+            <button class="btn" onclick="zoomOut()">Zoom Out</button>
+            <button class="btn" onclick="zoomToFit()">Fit to Screen</button>
+            <button class="btn" onclick="resetZoom()">Reset Zoom</button>
+        </div>
+
+        <div class="legend">
+            <div class="simplified-features">
+                <h5>✨ Simplified Version Features:</h5>
+                <ul class="feature-list">
+                    <li>Single start point for the entire process</li>
+                    <li>Focus on Implementation Engineer core responsibilities</li>
+                    <li>Cleaner flow without intermediate "receive" tasks</li>
+                    <li>Emphasis on action-oriented tasks</li>
+                    <li>Streamlined loops and decision points</li>
+                </ul>
+            </div>
+            
+            <h4>🔄 Key Process Flow (Simplified):</h4>
+            <div style="margin-top: 10px;">
+                <strong>IE-Driven Process:</strong> Start → Kickoff & Scope Validation → Integration Support → Certification Loop → Monitoring → TAM Handover
+            </div>
+        </div>
+    </div>
+
+    <!-- BPMN.js library -->
+    <script src="https://unpkg.com/bpmn-js@17.0.2/dist/bpmn-navigated-viewer.production.min.js"></script>
+    
+    <script>
+        // Initialize BPMN viewer
+        const viewer = new BpmnJS({
+            container: '#canvas'
+        });
+
+        let currentZoom = 1;
+
+        // Load BPMN file
+        async function loadBPMN() {
+            try {
+                const response = await fetch('merchant_integration_process_simple.bpmn');
+                
+                if (!response.ok) {
+                    throw new Error(`Failed to load BPMN file: ${response.status} ${response.statusText}`);
+                }
+                
+                const bpmnXML = await response.text();
+                
+                await viewer.importXML(bpmnXML);
+                
+                // Fit diagram to screen
+                const canvas = viewer.get('canvas');
+                canvas.zoom('fit-viewport');
+                
+                console.log('Simplified BPMN diagram loaded successfully');
+                
+            } catch (error) {
+                console.error('Error loading simplified BPMN:', error);
+                document.getElementById('canvas').innerHTML = `
+                    <div class="error">
+                        <div>
+                            <h3>Error Loading Simple BPMN File</h3>
+                            <p>Make sure the 'merchant_integration_process_simple.bpmn' file is in the same directory as this HTML file.</p>
+                            <p>Error: ${error.message}</p>
+                            <p><small>Try opening this HTML file through a web server (not file:// protocol)</small></p>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // Zoom controls
+        function zoomIn() {
+            const canvas = viewer.get('canvas');
+            currentZoom = Math.min(currentZoom * 1.2, 3);
+            canvas.zoom(currentZoom);
+        }
+
+        function zoomOut() {
+            const canvas = viewer.get('canvas');
+            currentZoom = Math.max(currentZoom / 1.2, 0.2);
+            canvas.zoom(currentZoom);
+        }
+
+        function zoomToFit() {
+            const canvas = viewer.get('canvas');
+            canvas.zoom('fit-viewport');
+            currentZoom = canvas.zoom();
+        }
+
+        function resetZoom() {
+            const canvas = viewer.get('canvas');
+            currentZoom = 1;
+            canvas.zoom(currentZoom);
+        }
+
+        // Handle keyboard shortcuts
+        document.addEventListener('keydown', function(event) {
+            if (event.ctrlKey || event.metaKey) {
+                switch(event.key) {
+                    case '+':
+                    case '=':
+                        event.preventDefault();
+                        zoomIn();
+                        break;
+                    case '-':
+                        event.preventDefault();
+                        zoomOut();
+                        break;
+                    case '0':
+                        event.preventDefault();
+                        zoomToFit();
+                        break;
+                }
+            }
+        });
+
+        // Load the BPMN when page loads
+        window.addEventListener('load', loadBPMN);
+    </script>
+</body>
+</html> 

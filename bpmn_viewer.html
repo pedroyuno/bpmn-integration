@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Merchant Integration Process - BPMN Viewer</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        
+        .header h1 {
+            margin: 0;
+            color: #2c3e50;
+        }
+        
+        .header p {
+            margin: 5px 0;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        #canvas {
+            height: 80vh;
+            width: 100%;
+            border: none;
+        }
+        
+        .controls {
+            padding: 15px;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            text-align: center;
+        }
+        
+        .btn {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            margin: 0 5px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .btn:hover {
+            background: #0056b3;
+        }
+        
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 80vh;
+            font-size: 18px;
+            color: #666;
+        }
+        
+        .error {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 80vh;
+            font-size: 16px;
+            color: #dc3545;
+            text-align: center;
+        }
+
+        .legend {
+            padding: 15px;
+            background: #f8f9fa;
+            border-top: 1px solid #e9ecef;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .legend h4 {
+            margin: 0 0 10px 0;
+            color: #333;
+        }
+
+        .legend-item {
+            display: inline-block;
+            margin-right: 20px;
+            margin-bottom: 5px;
+        }
+
+        .legend-color {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            margin-right: 5px;
+            vertical-align: middle;
+            border: 1px solid #ccc;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Merchant Integration Process - Full Version</h1>
+        <p>BPMN Workflow Visualization - Complete Process Detail</p>
+        <p><strong>Actors:</strong> Sales Engineer (SE) | Implementation Engineer (IE) | Merchant</p>
+    </div>
+
+    <div class="version-toggle" style="text-align: center; margin-bottom: 20px;">
+        <a href="bpmn_viewer.html" class="version-btn active" style="background: #007bff; color: white; border: none; padding: 10px 20px; margin: 0 10px; border-radius: 4px; cursor: pointer; font-size: 14px; text-decoration: none; display: inline-block;">Full BPMN</a>
+        <a href="bpmn_viewer_simple.html" class="version-btn" style="background: #28a745; color: white; border: none; padding: 10px 20px; margin: 0 10px; border-radius: 4px; cursor: pointer; font-size: 14px; text-decoration: none; display: inline-block;">Simple BPMN</a>
+    </div>
+
+    <div class="container">
+        <div id="canvas" class="loading">
+            Loading BPMN diagram...
+        </div>
+        
+        <div class="controls">
+            <button class="btn" onclick="zoomIn()">Zoom In</button>
+            <button class="btn" onclick="zoomOut()">Zoom Out</button>
+            <button class="btn" onclick="zoomToFit()">Fit to Screen</button>
+            <button class="btn" onclick="resetZoom()">Reset Zoom</button>
+        </div>
+
+        <div class="legend">
+            <h4>Process Legend:</h4>
+            <div class="legend-item">
+                <span class="legend-color" style="background: #e1f5fe;"></span>
+                <span>Sales Engineer Lane</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-color" style="background: #f3e5f5;"></span>
+                <span>Implementation Engineer Lane</span>
+            </div>
+            <div class="legend-item">
+                <span class="legend-color" style="background: #e8f5e8;"></span>
+                <span>Merchant Lane</span>
+            </div>
+            <div style="margin-top: 10px;">
+                <strong>Key Process Steps:</strong> Handover → Kickoff → Scope Validation → Integration → Certification Loop → Go Live → 30-day Monitoring → TAM Handover
+            </div>
+        </div>
+    </div>
+
+    <!-- BPMN.js library -->
+    <script src="https://unpkg.com/bpmn-js@17.0.2/dist/bpmn-navigated-viewer.production.min.js"></script>
+    
+    <script>
+        // Initialize BPMN viewer
+        const viewer = new BpmnJS({
+            container: '#canvas'
+        });
+
+        let currentZoom = 1;
+
+        // Load BPMN file
+        async function loadBPMN() {
+            try {
+                const response = await fetch('merchant_integration_process.bpmn');
+                
+                if (!response.ok) {
+                    throw new Error(`Failed to load BPMN file: ${response.status} ${response.statusText}`);
+                }
+                
+                const bpmnXML = await response.text();
+                
+                await viewer.importXML(bpmnXML);
+                
+                // Fit diagram to screen
+                const canvas = viewer.get('canvas');
+                canvas.zoom('fit-viewport');
+                
+                console.log('BPMN diagram loaded successfully');
+                
+            } catch (error) {
+                console.error('Error loading BPMN:', error);
+                document.getElementById('canvas').innerHTML = `
+                    <div class="error">
+                        <div>
+                            <h3>Error Loading BPMN File</h3>
+                            <p>Make sure the 'merchant_integration_process.bpmn' file is in the same directory as this HTML file.</p>
+                            <p>Error: ${error.message}</p>
+                            <p><small>Try opening this HTML file through a web server (not file:// protocol)</small></p>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // Zoom controls
+        function zoomIn() {
+            const canvas = viewer.get('canvas');
+            currentZoom = Math.min(currentZoom * 1.2, 3);
+            canvas.zoom(currentZoom);
+        }
+
+        function zoomOut() {
+            const canvas = viewer.get('canvas');
+            currentZoom = Math.max(currentZoom / 1.2, 0.2);
+            canvas.zoom(currentZoom);
+        }
+
+        function zoomToFit() {
+            const canvas = viewer.get('canvas');
+            canvas.zoom('fit-viewport');
+            currentZoom = canvas.zoom();
+        }
+
+        function resetZoom() {
+            const canvas = viewer.get('canvas');
+            currentZoom = 1;
+            canvas.zoom(currentZoom);
+        }
+
+        // Handle keyboard shortcuts
+        document.addEventListener('keydown', function(event) {
+            if (event.ctrlKey || event.metaKey) {
+                switch(event.key) {
+                    case '+':
+                    case '=':
+                        event.preventDefault();
+                        zoomIn();
+                        break;
+                    case '-':
+                        event.preventDefault();
+                        zoomOut();
+                        break;
+                    case '0':
+                        event.preventDefault();
+                        zoomToFit();
+                        break;
+                }
+            }
+        });
+
+        // Load the BPMN when page loads
+        window.addEventListener('load', loadBPMN);
+    </script>
+</body>
+</html> 
