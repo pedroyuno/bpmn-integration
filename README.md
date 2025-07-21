@@ -1,11 +1,11 @@
 # 🔄 Merchant Integration Process - BPMN Viewer
 
-This project contains BPMN workflows for the merchant integration process with interactive HTML viewers. Available in both **Full** and **Simplified** versions.
+This project contains BPMN workflows for the merchant integration process with interactive HTML viewers. Available in both **Full** and **Simplified** versions with **download functionality**.
 
 ## 📁 Files
 
 **BPMN Files:**
-- `merchant_integration_process.bpmn` - Full BPMN 2.0 XML process definition (detailed)
+- `merchant_integration_process.bpmn` - Full BPMN 2.0 XML process definition (4-lane detailed process)
 - `merchant_integration_process_simple.bpmn` - Simplified BPMN 2.0 XML process definition
 
 **Viewers:**
@@ -19,16 +19,24 @@ This project contains BPMN workflows for the merchant integration process with i
 ## 🎯 Two Versions Available
 
 ### 🔧 **Full BPMN** (`bpmn_viewer.html`)
-- Complete process with all intermediate steps
+- Complete 4-lane process (BDM/TAM/Merchant/KAM)
 - Detailed message flows and events
-- Multiple start points across different actors
-- Comprehensive task breakdown
+- Comprehensive task breakdown with escalation paths
+- Enterprise-grade BPMN structure
 
 ### ⚡ **Simplified BPMN** (`bpmn_viewer_simple.html`)
-- Single start point for the entire process
-- Focus on Implementation Engineer core responsibilities
+- Streamlined 4-lane process focused on core workflow
+- Emphasis on TAM core responsibilities
 - Cleaner flow without intermediate "receive" tasks
 - Streamlined loops and decision points
+
+## ✨ Key Features
+
+- 📥 **Download as PNG** - Export diagrams as high-quality images
+- 🖱️ **Interactive Viewers** - Zoom, pan, and explore process details
+- 🔄 **Version Toggle** - Switch between full and simplified views
+- ⌨️ **Keyboard Shortcuts** - Quick access to common functions
+- 📱 **Responsive Design** - Works on desktop and mobile devices
 
 ## 🚀 Quick Start
 
@@ -56,97 +64,132 @@ Place all files in your web server directory and open either:
 
 ## 🏊‍♂️ Process Overview
 
-Both BPMN diagrams show the merchant integration workflow with three main actors in separate pool lanes:
+Both BPMN diagrams show the merchant integration workflow with **four main actors** in separate pool lanes:
 
 ### **🔧 Full BPMN Process (`merchant_integration_process.bpmn`)**
 **Complete detailed workflow with:**
-- Multiple start points across different actors
-- Intermediate "receive" and handoff tasks
+- 4-lane structure with escalation support
 - Detailed message flows between all participants
-- Comprehensive event handling
+- Comprehensive event handling and decision points
+- KAM escalation path for unresponsive merchants
 - Professional enterprise-grade BPMN structure
 
-**Flow:** SE Handover → IE Receives → IE Schedules Kickoff → Scope Validation → Integration Support → Certification Loop → Monitoring → TAM Handover
+**Flow:** BDM Handover → TAM Kickoff → Scope Validation → Integration Support → Certification Loop → Monitoring → Support Handover
 
 ### **⚡ Simplified BPMN Process (`merchant_integration_process_simple.bpmn`)**
 **Streamlined workflow focused on core actions:**
-- Single start point in Implementation Engineer lane
+- 4-lane structure with TAM-focused responsibilities
 - Direct action-oriented tasks without intermediate steps
-- Clear focus on IE responsibilities and decision points
-- Simplified certification loop (adjustments go directly back to certification)
+- Clear focus on TAM decision points and merchant interactions
+- Simplified certification and escalation flows
 - Clean, easy-to-follow process flow
 
-**Flow:** Start → IE Kickoff & Scope Validation → IE Integration Support → IE Certification → (if adjustments needed: back to certification) → IE Monitoring → IE TAM Handover
+**Flow:** Start → TAM Kickoff & Scope Validation → TAM Integration Support → TAM Certification → (if adjustments needed: back to certification) → TAM Monitoring → TAM Support Handover
 
 ## 👥 **Actor Responsibilities**
 
-### **Sales Engineer (SE)**
-- Initiates the process
-- Schedules handover with Implementation Engineer
-- Sends merchant scope information
+### **BDM (Business Development Manager)**
+- Initiates the integration process
+- Schedules handover with TAM
+- Provides merchant scope information
+- Handles scope revision requests
 
-### **Implementation Engineer (IE)** ⭐ *Main Process Owner*
+### **TAM (Technical Account Manager)** ⭐ *Main Process Owner*
+- Receives handover from BDM
 - Schedules and conducts kickoff meeting
 - Validates scope with merchant
-- Supports integration development **(IE handles integration)**
-- Handles certification process
+- Supports integration development **(TAM handles integration)**
+- Handles certification process and merchant escalations
 - Monitors for 30 days post go-live
-- Hands over to TAM team
+- Hands over to Support team
 
 ### **Merchant**
 - Participates in kickoff meeting
-- Develops integration with IE support
+- Develops integration with TAM support
 - Submits integration for certification
 - Makes adjustments if needed
 - Goes live when approved
+
+### **KAM (Key Account Manager)**
+- Engages unresponsive merchants
+- Facilitates integration when escalated
+- Handles merchant relationship issues
 
 ## 🔄 Key Differences Between Versions
 
 | Feature | **Full BPMN** 🔧 | **Simple BPMN** ⚡ |
 |---------|------------------|-------------------|
-| **Start Points** | Multiple (SE, IE, Merchant) | Single (IE only) |
-| **Task Detail** | Complete with receive/send tasks | Action-focused, no intermediate steps |
-| **Certification Loop** | Merchant adjusts → resubmits integration | Merchant adjusts → IE re-certifies directly |
-| **Message Flows** | Comprehensive cross-lane communication | Streamlined essential communication |
-| **Use Case** | Documentation, enterprise implementation | Training, quick reference, simplified view |
-| **Complexity** | High - enterprise grade | Low - easy to understand |
+| **Lanes** | 4 (BDM/TAM/Merchant/KAM) | 4 (BDM/TAM/Merchant/KAM) |
+| **Start Points** | Multiple with handover flow | Single TAM-driven process |
+| **Task Detail** | Complete with receive/send tasks | Action-focused, streamlined steps |
+| **Escalation** | Full KAM escalation path | Simplified escalation handling |
+| **Message Flows** | Comprehensive cross-lane communication | Essential communication only |
+| **Use Case** | Documentation, enterprise implementation | Training, quick reference |
+| **Complexity** | High - enterprise grade | Medium - easy to understand |
 
 ## 🔄 Core Process Flow
 
-1. **Handover** - SE to IE with merchant scope
-2. **Kickoff** - IE schedules meeting with merchant  
-3. **Scope Validation** - If invalid, loops back to handover
-4. **Integration** - Merchant develops with IE support
-5. **Certification Loop** - IE certifies, merchant adjusts if needed
-6. **Go Live** - When certification passes
-7. **Monitoring** - IE monitors for 30 days
-8. **TAM Handover** - IE transfers to TAM team
+1. **BDM Handover** - BDM to TAM with merchant scope
+2. **Kickoff** - TAM schedules meeting with merchant  
+3. **Scope Validation** - If invalid, loops back for revision
+4. **Integration** - Merchant develops with TAM support
+5. **Escalation** - KAM engages if merchant unresponsive
+6. **Certification Loop** - TAM certifies, merchant adjusts if needed
+7. **Go Live** - When certification passes
+8. **Monitoring** - TAM monitors for 30 days
+9. **Support Handover** - TAM transfers to Support team
 
 ## 🎮 Viewer Controls
 
-- **Zoom In/Out** - Use buttons or Ctrl/Cmd + +/-
-- **Fit to Screen** - Use button or Ctrl/Cmd + 0
-- **Pan** - Click and drag
-- **Interactive Elements** - Click on process elements for details
+### Navigation & Zoom
+- **Zoom In/Out** - Use buttons or `Ctrl/Cmd + +/-`
+- **Fit to Screen** - Use button or `Ctrl/Cmd + 0`
+- **Reset Zoom** - Return to default zoom level
+- **Pan** - Click and drag to move around
+
+### Download Feature 📥
+- **Download Button** - Green "📥 Download as Image" button
+- **Keyboard Shortcut** - `Ctrl/Cmd + D` for quick download
+- **High Quality** - PNG format with white background
+- **Smart Naming** - Automatic descriptive filenames
+
+### Interactive Elements
+- Click on process elements for details
+- Hover over elements for additional information
 
 ## 🔧 Technical Details
 
 - **BPMN Version**: 2.0
-- **Viewer Library**: bpmn-js
+- **Viewer Library**: bpmn-js v17.0.2
 - **File Format**: Standard BPMN XML
+- **Image Export**: PNG format via HTML5 Canvas
 - **Compatible with**: Camunda, Flowable, jBPM, Zeebe, and other BPMN engines
 
-## 📝 Notes
+## 📝 Process Notes
 
-- The diagram uses pool lanes to clearly separate responsibilities
-- Message flows show communication between actors
-- Gateways handle decision points and loops
-- Process is designed for both documentation and potential automation
+- **4-lane structure** clearly separates responsibilities across BDM, TAM, Merchant, and KAM
+- **Message flows** show communication between actors
+- **Gateways** handle decision points and process loops
+- **Escalation path** through KAM for unresponsive merchants
+- **Designed for** both documentation and potential automation
 
 ## 🛠️ Troubleshooting
 
 **If the BPMN doesn't load:**
 1. Make sure you're using a web server (not opening HTML file directly)
-2. Check that `merchant_integration_process.bpmn` is in the same directory
+2. Check that the `.bpmn` files are in the same directory
 3. Check browser console for any error messages
-4. Try the Python server method for best compatibility 
+4. Try the Python server method for best compatibility
+
+**If download doesn't work:**
+1. Ensure the diagram has loaded completely
+2. Check browser permissions for downloads
+3. Try using the keyboard shortcut `Ctrl/Cmd + D`
+
+## 📈 Recent Updates
+
+- ✅ **Fixed BPMN structure** - Corrected 4-lane process (BDM/TAM/Merchant/KAM)
+- ✅ **Added download functionality** - Export diagrams as PNG images
+- ✅ **Updated actor information** - Reflects current organizational structure
+- ✅ **Enhanced viewers** - Improved UI and user experience
+- ✅ **Keyboard shortcuts** - Added quick access controls 
