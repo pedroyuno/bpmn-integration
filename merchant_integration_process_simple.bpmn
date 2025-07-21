@@ -13,6 +13,7 @@
     <bpmn:messageFlow id="Flow_003nwaz" sourceRef="Task_TAM_Certification" targetRef="Task_Merchant_Adjustments" />
     <bpmn:messageFlow id="Flow_0vtf1rr" sourceRef="Task_TAM_KickoffMeeting" targetRef="Activity_01shjin" />
     <bpmn:messageFlow id="Flow_05m30jo" sourceRef="Activity_0c92n10" targetRef="Task_TAM_Monitor" />
+    <bpmn:messageFlow id="Flow_0h096wt" sourceRef="Task_TAM_HandoverSupport" targetRef="Activity_0r6ogmj" />
   </bpmn:collaboration>
   <bpmn:process id="Process_BDM_Simple" isExecutable="false">
     <bpmn:task id="Task_BDM_Handover" name="Schedule handover with TAM, send merchant scope">
@@ -27,6 +28,13 @@
     <bpmn:task id="Task_KAM_EngageMerchant" name="Engage unresponsive merchant and facilitate integration" />
     <bpmn:task id="Activity_01shjin" name="Participate in kickoff meeting" />
     <bpmn:task id="Activity_0c92n10" name="Verify if integration fulfill merchant expectations" />
+    <bpmn:task id="Activity_0r6ogmj" name="Ownership of relationship with the merchant">
+      <bpmn:outgoing>Flow_1wqekcq</bpmn:outgoing>
+    </bpmn:task>
+    <bpmn:endEvent id="Event_1tpxbp4">
+      <bpmn:incoming>Flow_1wqekcq</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1wqekcq" sourceRef="Activity_0r6ogmj" targetRef="Event_1tpxbp4" />
   </bpmn:process>
   <bpmn:process id="Process_TAM_Simple" isExecutable="false">
     <bpmn:sequenceFlow id="Flow_Unresponsive_KAM" sourceRef="Gateway_TAM_MerchantResponsive" targetRef="Task_TAM_EscalateToKAM" />
@@ -37,8 +45,7 @@
     <bpmn:task id="Task_TAM_Certification" name="Certify the integration" />
     <bpmn:exclusiveGateway id="Gateway_TAM_CertificationResult" name="Is integration correct?" />
     <bpmn:task id="Task_TAM_Monitor" name="Monitor for 30 days" />
-    <bpmn:task id="Task_TAM_HandoverSupport" name="Handover to Support team" />
-    <bpmn:endEvent id="EndEvent_Process" name="Process Complete" />
+    <bpmn:task id="Task_TAM_HandoverSupport" name="Handover to KAM and Support team" />
     <bpmn:sequenceFlow id="Flow_Start_Kickoff" sourceRef="StartEvent_Process" targetRef="Task_TAM_KickoffMeeting" />
     <bpmn:sequenceFlow id="Flow_Kickoff_Gateway" sourceRef="Task_TAM_KickoffMeeting" targetRef="Gateway_TAM_ScopeValid" />
     <bpmn:sequenceFlow id="Flow_Valid_Integration" name="Yes" sourceRef="Gateway_TAM_ScopeValid" targetRef="Task_TAM_SupportIntegration" />
@@ -47,7 +54,6 @@
     <bpmn:sequenceFlow id="Flow_Certification_Gateway" sourceRef="Task_TAM_Certification" targetRef="Gateway_TAM_CertificationResult" />
     <bpmn:sequenceFlow id="Flow_Certified_Monitor" name="Yes" sourceRef="Gateway_TAM_CertificationResult" targetRef="Task_TAM_Monitor" />
     <bpmn:sequenceFlow id="Flow_Monitor_Support" sourceRef="Task_TAM_Monitor" targetRef="Task_TAM_HandoverSupport" />
-    <bpmn:sequenceFlow id="Flow_Support_End" sourceRef="Task_TAM_HandoverSupport" targetRef="EndEvent_Process" />
     <bpmn:exclusiveGateway id="Gateway_TAM_MerchantResponsive" name="Is merchant responsive?" />
     <bpmn:task id="Task_TAM_EscalateToKAM" name="Escalate to KAM - merchant unresponsive" />
   </bpmn:process>
@@ -94,6 +100,17 @@
         <dc:Bounds x="1050" y="220" width="100" height="80" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0r6ogmj_di" bpmnElement="Activity_0r6ogmj">
+        <dc:Bounds x="1200" y="220" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1tpxbp4_di" bpmnElement="Event_1tpxbp4">
+        <dc:Bounds x="1352" y="242" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1wqekcq_di" bpmnElement="Flow_1wqekcq">
+        <di:waypoint x="1300" y="260" />
+        <di:waypoint x="1352" y="260" />
+      </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Participant_TAM_Simple_di" bpmnElement="Participant_TAM_Simple" isHorizontal="true">
         <dc:Bounds x="160" y="320" width="1280" height="260" />
         <bpmndi:BPMNLabel />
@@ -130,12 +147,7 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Task_TAM_HandoverSupport_di" bpmnElement="Task_TAM_HandoverSupport">
         <dc:Bounds x="1200" y="450" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="EndEvent_Process_di" bpmnElement="EndEvent_Process">
-        <dc:Bounds x="1352" y="472" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1325" y="515" width="90" height="14" />
-        </bpmndi:BPMNLabel>
+        <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_TAM_MerchantResponsive_di" bpmnElement="Gateway_TAM_MerchantResponsive" isMarkerVisible="true">
         <dc:Bounds x="700" y="465" width="50" height="50" />
@@ -194,10 +206,6 @@
         <di:waypoint x="1150" y="490" />
         <di:waypoint x="1200" y="490" />
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_Support_End_di" bpmnElement="Flow_Support_End">
-        <di:waypoint x="1300" y="490" />
-        <di:waypoint x="1352" y="490" />
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Participant_Merchant_Simple_di" bpmnElement="Participant_Merchant_Simple" isHorizontal="true">
         <dc:Bounds x="160" y="580" width="1280" height="160" />
       </bpmndi:BPMNShape>
@@ -254,6 +262,10 @@
       <bpmndi:BPMNEdge id="Flow_05m30jo_di" bpmnElement="Flow_05m30jo">
         <di:waypoint x="1100" y="300" />
         <di:waypoint x="1100" y="450" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0h096wt_di" bpmnElement="Flow_0h096wt">
+        <di:waypoint x="1250" y="450" />
+        <di:waypoint x="1250" y="300" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
