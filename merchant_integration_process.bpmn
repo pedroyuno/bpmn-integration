@@ -34,49 +34,49 @@
     
   </bpmn:collaboration>
 
-  <!-- Sales Engineer Process -->
-  <bpmn:process id="Process_SE" isExecutable="false">
-    <bpmn:startEvent id="StartEvent_SE" name="Process Starts" />
-    <bpmn:task id="Task_SE_ScheduleHandover" name="Schedule handover with IE, send merchant scope" />
-    <bpmn:endEvent id="EndEvent_SE" name="Handover Complete" />
+  <!-- BDM Process -->
+  <bpmn:process id="Process_BDM" isExecutable="false">
+    <bpmn:startEvent id="StartEvent_BDM" name="Process Starts" />
+    <bpmn:task id="Task_BDM_ScheduleHandover" name="Schedule handover with TAM, send merchant scope" />
+    <bpmn:endEvent id="EndEvent_BDM" name="Handover Complete" />
     
-    <bpmn:sequenceFlow id="Flow_SE_1" sourceRef="StartEvent_SE" targetRef="Task_SE_ScheduleHandover" />
-    <bpmn:sequenceFlow id="Flow_SE_2" sourceRef="Task_SE_ScheduleHandover" targetRef="EndEvent_SE" />
+    <bpmn:sequenceFlow id="Flow_BDM_1" sourceRef="StartEvent_BDM" targetRef="Task_BDM_ScheduleHandover" />
+    <bpmn:sequenceFlow id="Flow_BDM_2" sourceRef="Task_BDM_ScheduleHandover" targetRef="EndEvent_BDM" />
   </bpmn:process>
 
-  <!-- Implementation Engineer Process -->
-  <bpmn:process id="Process_IE" isExecutable="false">
-    <bpmn:startEvent id="Event_IE_Start" name="Receive Handover" />
-    <bpmn:task id="Task_IE_ReceiveHandover" name="Receive handover from SE" />
-    <bpmn:task id="Task_IE_ScheduleKickoff" name="Schedule kickoff meeting with merchant" />
-    <bpmn:task id="Task_IE_ValidateScope" name="Validate scope with merchant in kickoff meeting" />
-    <bpmn:exclusiveGateway id="Gateway_IE_ScopeValid" name="Is scope valid?" />
-    <bpmn:task id="Task_IE_RequestScopeRevision" name="Request scope revision from SE" />
-    <bpmn:task id="Task_IE_SupportIntegration" name="Support merchant integration (IE handles integration)" />
-    <bpmn:exclusiveGateway id="Gateway_IE_MerchantResponsive_Full" name="Is merchant responsive?" />
-    <bpmn:task id="Task_IE_EscalateToKAM_Full" name="Escalate to KAM - merchant unresponsive" />
-    <bpmn:task id="Task_IE_CertifyIntegration" name="Certify the integration" />
-    <bpmn:exclusiveGateway id="Gateway_IE_CertificationResult" name="Is integration correct?" />
-    <bpmn:task id="Task_IE_Monitor" name="Monitor for 30 days" />
-    <bpmn:task id="Task_IE_HandoverTAM" name="Handover merchant to TAM team" />
-    <bpmn:endEvent id="EndEvent_IE" name="Process Complete" />
+  <!-- TAM Process -->
+  <bpmn:process id="Process_TAM" isExecutable="false">
+    <bpmn:startEvent id="Event_TAM_Start" name="Receive Handover" />
+    <bpmn:task id="Task_TAM_ReceiveHandover" name="Receive handover from BDM" />
+    <bpmn:task id="Task_TAM_ScheduleKickoff" name="Schedule kickoff meeting with merchant" />
+    <bpmn:task id="Task_TAM_ValidateScope" name="Validate scope with merchant in kickoff meeting" />
+    <bpmn:exclusiveGateway id="Gateway_TAM_ScopeValid" name="Is scope valid?" />
+    <bpmn:task id="Task_TAM_RequestScopeRevision" name="Request scope revision from BDM" />
+    <bpmn:task id="Task_TAM_SupportIntegration" name="Support merchant integration (TAM handles integration)" />
+    <bpmn:exclusiveGateway id="Gateway_TAM_MerchantResponsive_Full" name="Is merchant responsive?" />
+    <bpmn:task id="Task_TAM_EscalateToKAM_Full" name="Escalate to KAM - merchant unresponsive" />
+    <bpmn:task id="Task_TAM_CertifyIntegration" name="Certify the integration" />
+    <bpmn:exclusiveGateway id="Gateway_TAM_CertificationResult" name="Is integration correct?" />
+    <bpmn:task id="Task_TAM_Monitor" name="Monitor for 30 days" />
+    <bpmn:task id="Task_TAM_HandoverSupport" name="Handover merchant to Support team" />
+    <bpmn:endEvent id="EndEvent_TAM" name="Process Complete" />
     
-    <bpmn:sequenceFlow id="Flow_IE_1" sourceRef="Event_IE_Start" targetRef="Task_IE_ReceiveHandover" />
-    <bpmn:sequenceFlow id="Flow_IE_2" sourceRef="Task_IE_ReceiveHandover" targetRef="Task_IE_ScheduleKickoff" />
-    <bpmn:sequenceFlow id="Flow_IE_3" sourceRef="Task_IE_ScheduleKickoff" targetRef="Task_IE_ValidateScope" />
-    <bpmn:sequenceFlow id="Flow_IE_4" sourceRef="Task_IE_ValidateScope" targetRef="Gateway_IE_ScopeValid" />
-    <bpmn:sequenceFlow id="Flow_IE_5" name="Yes" sourceRef="Gateway_IE_ScopeValid" targetRef="Task_IE_SupportIntegration" />
-    <bpmn:sequenceFlow id="Flow_IE_6" name="No" sourceRef="Gateway_IE_ScopeValid" targetRef="Task_IE_RequestScopeRevision" />
-    <bpmn:sequenceFlow id="Flow_IE_6a" sourceRef="Task_IE_RequestScopeRevision" targetRef="Task_IE_ReceiveHandover" />
-    <bpmn:sequenceFlow id="Flow_IE_7" sourceRef="Task_IE_SupportIntegration" targetRef="Gateway_IE_MerchantResponsive_Full" />
-    <bpmn:sequenceFlow id="Flow_IE_7a" name="Yes" sourceRef="Gateway_IE_MerchantResponsive_Full" targetRef="Task_IE_CertifyIntegration" />
-    <bpmn:sequenceFlow id="Flow_IE_7b" name="No" sourceRef="Gateway_IE_MerchantResponsive_Full" targetRef="Task_IE_EscalateToKAM_Full" />
-    <bpmn:sequenceFlow id="Flow_IE_7c" sourceRef="Task_IE_EscalateToKAM_Full" targetRef="Task_IE_CertifyIntegration" />
-    <bpmn:sequenceFlow id="Flow_IE_8" sourceRef="Task_IE_CertifyIntegration" targetRef="Gateway_IE_CertificationResult" />
-    <bpmn:sequenceFlow id="Flow_IE_9" name="Yes" sourceRef="Gateway_IE_CertificationResult" targetRef="Task_IE_Monitor" />
-    <bpmn:sequenceFlow id="Flow_IE_9a" name="No" sourceRef="Gateway_IE_CertificationResult" targetRef="Task_IE_CertifyIntegration" />
-    <bpmn:sequenceFlow id="Flow_IE_10" sourceRef="Task_IE_Monitor" targetRef="Task_IE_HandoverTAM" />
-    <bpmn:sequenceFlow id="Flow_IE_11" sourceRef="Task_IE_HandoverTAM" targetRef="EndEvent_IE" />
+    <bpmn:sequenceFlow id="Flow_TAM_1" sourceRef="Event_TAM_Start" targetRef="Task_TAM_ReceiveHandover" />
+    <bpmn:sequenceFlow id="Flow_TAM_2" sourceRef="Task_TAM_ReceiveHandover" targetRef="Task_TAM_ScheduleKickoff" />
+    <bpmn:sequenceFlow id="Flow_TAM_3" sourceRef="Task_TAM_ScheduleKickoff" targetRef="Task_TAM_ValidateScope" />
+    <bpmn:sequenceFlow id="Flow_TAM_4" sourceRef="Task_TAM_ValidateScope" targetRef="Gateway_TAM_ScopeValid" />
+    <bpmn:sequenceFlow id="Flow_TAM_5" name="Yes" sourceRef="Gateway_TAM_ScopeValid" targetRef="Task_TAM_SupportIntegration" />
+    <bpmn:sequenceFlow id="Flow_TAM_6" name="No" sourceRef="Gateway_TAM_ScopeValid" targetRef="Task_TAM_RequestScopeRevision" />
+    <bpmn:sequenceFlow id="Flow_TAM_6a" sourceRef="Task_TAM_RequestScopeRevision" targetRef="Task_TAM_ReceiveHandover" />
+    <bpmn:sequenceFlow id="Flow_TAM_7" sourceRef="Task_TAM_SupportIntegration" targetRef="Gateway_TAM_MerchantResponsive_Full" />
+    <bpmn:sequenceFlow id="Flow_TAM_7a" name="Yes" sourceRef="Gateway_TAM_MerchantResponsive_Full" targetRef="Task_TAM_CertifyIntegration" />
+    <bpmn:sequenceFlow id="Flow_TAM_7b" name="No" sourceRef="Gateway_TAM_MerchantResponsive_Full" targetRef="Task_TAM_EscalateToKAM_Full" />
+    <bpmn:sequenceFlow id="Flow_TAM_7c" sourceRef="Task_TAM_EscalateToKAM_Full" targetRef="Task_TAM_CertifyIntegration" />
+    <bpmn:sequenceFlow id="Flow_TAM_8" sourceRef="Task_TAM_CertifyIntegration" targetRef="Gateway_TAM_CertificationResult" />
+    <bpmn:sequenceFlow id="Flow_TAM_9" name="Yes" sourceRef="Gateway_TAM_CertificationResult" targetRef="Task_TAM_Monitor" />
+    <bpmn:sequenceFlow id="Flow_TAM_9a" name="No" sourceRef="Gateway_TAM_CertificationResult" targetRef="Task_TAM_CertifyIntegration" />
+    <bpmn:sequenceFlow id="Flow_TAM_10" sourceRef="Task_TAM_Monitor" targetRef="Task_TAM_HandoverSupport" />
+    <bpmn:sequenceFlow id="Flow_TAM_11" sourceRef="Task_TAM_HandoverSupport" targetRef="EndEvent_TAM" />
   </bpmn:process>
 
   <!-- KAM Process -->
@@ -94,7 +94,7 @@
     <bpmn:exclusiveGateway id="Gateway_Merchant_CertificationResult" name="Certification result" />
     <bpmn:task id="Task_Merchant_AdjustIntegration" name="Adjust integration based on feedback" />
     <bpmn:task id="Task_Merchant_GoLive" name="Go live with integration" />
-    <bpmn:intermediateCatchEvent id="Event_Merchant_HandedToTAM" name="Handed over to TAM" />
+    <bpmn:intermediateCatchEvent id="Event_Merchant_HandedToSupport" name="Handed over to Support" />
     <bpmn:endEvent id="EndEvent_Merchant" name="Process Complete" />
     
     <bpmn:sequenceFlow id="Flow_Merchant_1" sourceRef="Event_Merchant_Start" targetRef="Event_Merchant_KickoffScheduled" />
@@ -105,21 +105,21 @@
     <bpmn:sequenceFlow id="Flow_Merchant_6" name="Needs adjustment" sourceRef="Gateway_Merchant_CertificationResult" targetRef="Task_Merchant_AdjustIntegration" />
     <bpmn:sequenceFlow id="Flow_Merchant_7" sourceRef="Task_Merchant_AdjustIntegration" targetRef="Task_Merchant_SubmitIntegration" />
     <bpmn:sequenceFlow id="Flow_Merchant_8" name="Approved" sourceRef="Gateway_Merchant_CertificationResult" targetRef="Task_Merchant_GoLive" />
-    <bpmn:sequenceFlow id="Flow_Merchant_9" sourceRef="Task_Merchant_GoLive" targetRef="Event_Merchant_HandedToTAM" />
-    <bpmn:sequenceFlow id="Flow_Merchant_10" sourceRef="Event_Merchant_HandedToTAM" targetRef="EndEvent_Merchant" />
+    <bpmn:sequenceFlow id="Flow_Merchant_9" sourceRef="Task_Merchant_GoLive" targetRef="Event_Merchant_HandedToSupport" />
+    <bpmn:sequenceFlow id="Flow_Merchant_10" sourceRef="Event_Merchant_HandedToSupport" targetRef="EndEvent_Merchant" />
   </bpmn:process>
 
   <!-- Diagram Interchange -->
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Collaboration_MerchantIntegration">
       
-      <!-- Sales Engineer Pool -->
-      <bpmndi:BPMNShape id="Participant_SE_di" bpmnElement="Participant_SE" isHorizontal="true">
+      <!-- BDM Pool -->
+      <bpmndi:BPMNShape id="Participant_BDM_di" bpmnElement="Participant_BDM" isHorizontal="true">
         <dc:Bounds x="160" y="80" width="1600" height="120" />
       </bpmndi:BPMNShape>
       
-      <!-- Implementation Engineer Pool -->
-      <bpmndi:BPMNShape id="Participant_IE_di" bpmnElement="Participant_IE" isHorizontal="true">
+      <!-- TAM Pool -->
+      <bpmndi:BPMNShape id="Participant_TAM_di" bpmnElement="Participant_TAM" isHorizontal="true">
         <dc:Bounds x="160" y="220" width="1600" height="300" />
       </bpmndi:BPMNShape>
       
@@ -133,91 +133,91 @@
         <dc:Bounds x="160" y="760" width="1600" height="120" />
       </bpmndi:BPMNShape>
       
-      <!-- Sales Engineer Process Elements -->
-      <bpmndi:BPMNShape id="StartEvent_SE_di" bpmnElement="StartEvent_SE">
+      <!-- BDM Process Elements -->
+      <bpmndi:BPMNShape id="StartEvent_BDM_di" bpmnElement="StartEvent_BDM">
         <dc:Bounds x="212" y="122" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="196" y="165" width="70" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       
-      <bpmndi:BPMNShape id="Task_SE_ScheduleHandover_di" bpmnElement="Task_SE_ScheduleHandover">
+      <bpmndi:BPMNShape id="Task_BDM_ScheduleHandover_di" bpmnElement="Task_BDM_ScheduleHandover">
         <dc:Bounds x="300" y="100" width="100" height="80" />
       </bpmndi:BPMNShape>
       
-      <bpmndi:BPMNShape id="EndEvent_SE_di" bpmnElement="EndEvent_SE">
+      <bpmndi:BPMNShape id="EndEvent_BDM_di" bpmnElement="EndEvent_BDM">
         <dc:Bounds x="450" y="122" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="426" y="165" width="84" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       
-      <!-- Implementation Engineer Process Elements -->
-      <bpmndi:BPMNShape id="Event_IE_Start_di" bpmnElement="Event_IE_Start">
+      <!-- TAM Process Elements -->
+      <bpmndi:BPMNShape id="Event_TAM_Start_di" bpmnElement="Event_TAM_Start">
         <dc:Bounds x="212" y="262" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="188" y="305" width="84" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       
-      <bpmndi:BPMNShape id="Task_IE_ReceiveHandover_di" bpmnElement="Task_IE_ReceiveHandover">
+      <bpmndi:BPMNShape id="Task_TAM_ReceiveHandover_di" bpmnElement="Task_TAM_ReceiveHandover">
         <dc:Bounds x="300" y="240" width="100" height="80" />
       </bpmndi:BPMNShape>
       
-      <bpmndi:BPMNShape id="Task_IE_ScheduleKickoff_di" bpmnElement="Task_IE_ScheduleKickoff">
+      <bpmndi:BPMNShape id="Task_TAM_ScheduleKickoff_di" bpmnElement="Task_TAM_ScheduleKickoff">
         <dc:Bounds x="450" y="240" width="100" height="80" />
       </bpmndi:BPMNShape>
       
-      <bpmndi:BPMNShape id="Task_IE_ValidateScope_di" bpmnElement="Task_IE_ValidateScope">
+      <bpmndi:BPMNShape id="Task_TAM_ValidateScope_di" bpmnElement="Task_TAM_ValidateScope">
         <dc:Bounds x="600" y="240" width="100" height="80" />
       </bpmndi:BPMNShape>
       
-      <bpmndi:BPMNShape id="Gateway_IE_ScopeValid_di" bpmnElement="Gateway_IE_ScopeValid" isMarkerVisible="true">
+      <bpmndi:BPMNShape id="Gateway_TAM_ScopeValid_di" bpmnElement="Gateway_TAM_ScopeValid" isMarkerVisible="true">
         <dc:Bounds x="750" y="255" width="50" height="50" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="737" y="312" width="76" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       
-      <bpmndi:BPMNShape id="Task_IE_RequestScopeRevision_di" bpmnElement="Task_IE_RequestScopeRevision">
+      <bpmndi:BPMNShape id="Task_TAM_RequestScopeRevision_di" bpmnElement="Task_TAM_RequestScopeRevision">
         <dc:Bounds x="600" y="350" width="100" height="80" />
       </bpmndi:BPMNShape>
       
-      <bpmndi:BPMNShape id="Task_IE_SupportIntegration_di" bpmnElement="Task_IE_SupportIntegration">
+      <bpmndi:BPMNShape id="Task_TAM_SupportIntegration_di" bpmnElement="Task_TAM_SupportIntegration">
         <dc:Bounds x="850" y="240" width="100" height="80" />
       </bpmndi:BPMNShape>
       
-      <bpmndi:BPMNShape id="Gateway_IE_MerchantResponsive_Full_di" bpmnElement="Gateway_IE_MerchantResponsive_Full" isMarkerVisible="true">
+      <bpmndi:BPMNShape id="Gateway_TAM_MerchantResponsive_Full_di" bpmnElement="Gateway_TAM_MerchantResponsive_Full" isMarkerVisible="true">
         <dc:Bounds x="1000" y="255" width="50" height="50" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="987" y="312" width="76" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       
-      <bpmndi:BPMNShape id="Task_IE_EscalateToKAM_Full_di" bpmnElement="Task_IE_EscalateToKAM_Full">
+      <bpmndi:BPMNShape id="Task_TAM_EscalateToKAM_Full_di" bpmnElement="Task_TAM_EscalateToKAM_Full">
         <dc:Bounds x="975" y="350" width="100" height="80" />
       </bpmndi:BPMNShape>
       
-      <bpmndi:BPMNShape id="Task_IE_CertifyIntegration_di" bpmnElement="Task_IE_CertifyIntegration">
+      <bpmndi:BPMNShape id="Task_TAM_CertifyIntegration_di" bpmnElement="Task_TAM_CertifyIntegration">
         <dc:Bounds x="1100" y="240" width="100" height="80" />
       </bpmndi:BPMNShape>
       
-      <bpmndi:BPMNShape id="Gateway_IE_CertificationResult_di" bpmnElement="Gateway_IE_CertificationResult" isMarkerVisible="true">
+      <bpmndi:BPMNShape id="Gateway_TAM_CertificationResult_di" bpmnElement="Gateway_TAM_CertificationResult" isMarkerVisible="true">
         <dc:Bounds x="1250" y="255" width="50" height="50" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="1240" y="312" width="71" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       
-      <bpmndi:BPMNShape id="Task_IE_Monitor_di" bpmnElement="Task_IE_Monitor">
+      <bpmndi:BPMNShape id="Task_TAM_Monitor_di" bpmnElement="Task_TAM_Monitor">
         <dc:Bounds x="1350" y="240" width="100" height="80" />
       </bpmndi:BPMNShape>
       
-      <bpmndi:BPMNShape id="Task_IE_HandoverTAM_di" bpmnElement="Task_IE_HandoverTAM">
+      <bpmndi:BPMNShape id="Task_TAM_HandoverSupport_di" bpmnElement="Task_TAM_HandoverSupport">
         <dc:Bounds x="1500" y="240" width="100" height="80" />
       </bpmndi:BPMNShape>
       
-      <bpmndi:BPMNShape id="EndEvent_IE_di" bpmnElement="EndEvent_IE">
+      <bpmndi:BPMNShape id="EndEvent_TAM_di" bpmnElement="EndEvent_TAM">
         <dc:Bounds x="1652" y="262" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="1627" y="305" width="86" height="14" />
@@ -266,7 +266,7 @@
         <dc:Bounds x="1250" y="560" width="100" height="80" />
       </bpmndi:BPMNShape>
       
-      <bpmndi:BPMNShape id="Event_Merchant_HandedToTAM_di" bpmnElement="Event_Merchant_HandedToTAM">
+      <bpmndi:BPMNShape id="Event_Merchant_HandedToSupport_di" bpmnElement="Event_Merchant_HandedToSupport">
         <dc:Bounds x="1432" y="582" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="1415" y="625" width="70" height="27" />
@@ -286,37 +286,37 @@
       </bpmndi:BPMNShape>
       
       <!-- Sequence Flows -->
-      <bpmndi:BPMNEdge id="Flow_SE_1_di" bpmnElement="Flow_SE_1">
+      <bpmndi:BPMNEdge id="Flow_BDM_1_di" bpmnElement="Flow_BDM_1">
         <di:waypoint x="248" y="140" />
         <di:waypoint x="300" y="140" />
       </bpmndi:BPMNEdge>
       
-      <bpmndi:BPMNEdge id="Flow_SE_2_di" bpmnElement="Flow_SE_2">
+      <bpmndi:BPMNEdge id="Flow_BDM_2_di" bpmnElement="Flow_BDM_2">
         <di:waypoint x="400" y="140" />
         <di:waypoint x="450" y="140" />
       </bpmndi:BPMNEdge>
       
-      <bpmndi:BPMNEdge id="Flow_IE_1_di" bpmnElement="Flow_IE_1">
+      <bpmndi:BPMNEdge id="Flow_TAM_1_di" bpmnElement="Flow_TAM_1">
         <di:waypoint x="248" y="280" />
         <di:waypoint x="300" y="280" />
       </bpmndi:BPMNEdge>
       
-      <bpmndi:BPMNEdge id="Flow_IE_2_di" bpmnElement="Flow_IE_2">
+      <bpmndi:BPMNEdge id="Flow_TAM_2_di" bpmnElement="Flow_TAM_2">
         <di:waypoint x="400" y="280" />
         <di:waypoint x="450" y="280" />
       </bpmndi:BPMNEdge>
       
-      <bpmndi:BPMNEdge id="Flow_IE_3_di" bpmnElement="Flow_IE_3">
+      <bpmndi:BPMNEdge id="Flow_TAM_3_di" bpmnElement="Flow_TAM_3">
         <di:waypoint x="550" y="280" />
         <di:waypoint x="600" y="280" />
       </bpmndi:BPMNEdge>
       
-      <bpmndi:BPMNEdge id="Flow_IE_4_di" bpmnElement="Flow_IE_4">
+      <bpmndi:BPMNEdge id="Flow_TAM_4_di" bpmnElement="Flow_TAM_4">
         <di:waypoint x="700" y="280" />
         <di:waypoint x="750" y="280" />
       </bpmndi:BPMNEdge>
       
-      <bpmndi:BPMNEdge id="Flow_IE_5_di" bpmnElement="Flow_IE_5">
+      <bpmndi:BPMNEdge id="Flow_TAM_5_di" bpmnElement="Flow_TAM_5">
         <di:waypoint x="800" y="280" />
         <di:waypoint x="850" y="280" />
         <bpmndi:BPMNLabel>
@@ -324,7 +324,7 @@
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       
-      <bpmndi:BPMNEdge id="Flow_IE_6_di" bpmnElement="Flow_IE_6">
+      <bpmndi:BPMNEdge id="Flow_TAM_6_di" bpmnElement="Flow_TAM_6">
         <di:waypoint x="775" y="305" />
         <di:waypoint x="775" y="390" />
         <di:waypoint x="700" y="390" />
@@ -333,18 +333,18 @@
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       
-      <bpmndi:BPMNEdge id="Flow_IE_6a_di" bpmnElement="Flow_IE_6a">
+      <bpmndi:BPMNEdge id="Flow_TAM_6a_di" bpmnElement="Flow_TAM_6a">
         <di:waypoint x="600" y="390" />
         <di:waypoint x="350" y="390" />
         <di:waypoint x="350" y="320" />
       </bpmndi:BPMNEdge>
       
-      <bpmndi:BPMNEdge id="Flow_IE_7_di" bpmnElement="Flow_IE_7">
+      <bpmndi:BPMNEdge id="Flow_TAM_7_di" bpmnElement="Flow_TAM_7">
         <di:waypoint x="950" y="280" />
         <di:waypoint x="1000" y="280" />
       </bpmndi:BPMNEdge>
       
-      <bpmndi:BPMNEdge id="Flow_IE_7a_di" bpmnElement="Flow_IE_7a">
+      <bpmndi:BPMNEdge id="Flow_TAM_7a_di" bpmnElement="Flow_TAM_7a">
         <di:waypoint x="1050" y="280" />
         <di:waypoint x="1100" y="280" />
         <bpmndi:BPMNLabel>
@@ -352,7 +352,7 @@
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       
-      <bpmndi:BPMNEdge id="Flow_IE_7b_di" bpmnElement="Flow_IE_7b">
+      <bpmndi:BPMNEdge id="Flow_TAM_7b_di" bpmnElement="Flow_TAM_7b">
         <di:waypoint x="1025" y="305" />
         <di:waypoint x="1025" y="350" />
         <bpmndi:BPMNLabel>
@@ -360,18 +360,18 @@
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       
-      <bpmndi:BPMNEdge id="Flow_IE_7c_di" bpmnElement="Flow_IE_7c">
+      <bpmndi:BPMNEdge id="Flow_TAM_7c_di" bpmnElement="Flow_TAM_7c">
         <di:waypoint x="1075" y="390" />
         <di:waypoint x="1150" y="390" />
         <di:waypoint x="1150" y="320" />
       </bpmndi:BPMNEdge>
       
-      <bpmndi:BPMNEdge id="Flow_IE_8_di" bpmnElement="Flow_IE_8">
+      <bpmndi:BPMNEdge id="Flow_TAM_8_di" bpmnElement="Flow_TAM_8">
         <di:waypoint x="1200" y="280" />
         <di:waypoint x="1250" y="280" />
       </bpmndi:BPMNEdge>
       
-      <bpmndi:BPMNEdge id="Flow_IE_9_di" bpmnElement="Flow_IE_9">
+      <bpmndi:BPMNEdge id="Flow_TAM_9_di" bpmnElement="Flow_TAM_9">
         <di:waypoint x="1300" y="280" />
         <di:waypoint x="1350" y="280" />
         <bpmndi:BPMNLabel>
@@ -379,7 +379,7 @@
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       
-      <bpmndi:BPMNEdge id="Flow_IE_9a_di" bpmnElement="Flow_IE_9a">
+      <bpmndi:BPMNEdge id="Flow_TAM_9a_di" bpmnElement="Flow_TAM_9a">
         <di:waypoint x="1275" y="305" />
         <di:waypoint x="1275" y="350" />
         <di:waypoint x="1150" y="350" />
@@ -389,12 +389,12 @@
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNEdge>
       
-      <bpmndi:BPMNEdge id="Flow_IE_10_di" bpmnElement="Flow_IE_10">
+      <bpmndi:BPMNEdge id="Flow_TAM_10_di" bpmnElement="Flow_TAM_10">
         <di:waypoint x="1450" y="280" />
         <di:waypoint x="1500" y="280" />
       </bpmndi:BPMNEdge>
       
-      <bpmndi:BPMNEdge id="Flow_IE_11_di" bpmnElement="Flow_IE_11">
+      <bpmndi:BPMNEdge id="Flow_TAM_11_di" bpmnElement="Flow_TAM_11">
         <di:waypoint x="1600" y="280" />
         <di:waypoint x="1652" y="280" />
       </bpmndi:BPMNEdge>
@@ -508,7 +508,7 @@
         <di:waypoint x="900" y="640" />
       </bpmndi:BPMNEdge>
       
-      <bpmndi:BPMNEdge id="MessageFlow_HandoverTAM_di" bpmnElement="MessageFlow_HandoverTAM">
+      <bpmndi:BPMNEdge id="MessageFlow_HandoverSupport_di" bpmnElement="MessageFlow_HandoverSupport">
         <di:waypoint x="1550" y="320" />
         <di:waypoint x="1450" y="582" />
       </bpmndi:BPMNEdge>
