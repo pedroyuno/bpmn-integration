@@ -11,6 +11,8 @@
     <bpmn:messageFlow id="MessageFlow_GoLive_Simple" sourceRef="Task_Merchant_GoLive" targetRef="Task_TAM_Monitor" />
     <bpmn:messageFlow id="Flow_0ht54tz" sourceRef="Task_TAM_EscalateToKAM" targetRef="Task_KAM_EngageMerchant" />
     <bpmn:messageFlow id="Flow_003nwaz" sourceRef="Task_TAM_Certification" targetRef="Task_Merchant_Adjustments" />
+    <bpmn:messageFlow id="Flow_0vtf1rr" sourceRef="Task_TAM_KickoffMeeting" targetRef="Activity_01shjin" />
+    <bpmn:messageFlow id="Flow_05m30jo" sourceRef="Activity_0c92n10" targetRef="Task_TAM_Monitor" />
   </bpmn:collaboration>
   <bpmn:process id="Process_BDM_Simple" isExecutable="false">
     <bpmn:task id="Task_BDM_Handover" name="Schedule handover with TAM, send merchant scope">
@@ -23,6 +25,8 @@
   </bpmn:process>
   <bpmn:process id="Process_KAM_Simple" isExecutable="false">
     <bpmn:task id="Task_KAM_EngageMerchant" name="Engage unresponsive merchant and facilitate integration" />
+    <bpmn:task id="Activity_01shjin" name="Participate in kickoff meeting" />
+    <bpmn:task id="Activity_0c92n10" name="Verify if integration fulfill merchant expectations" />
   </bpmn:process>
   <bpmn:process id="Process_TAM_Simple" isExecutable="false">
     <bpmn:sequenceFlow id="Flow_Unresponsive_KAM" sourceRef="Gateway_TAM_MerchantResponsive" targetRef="Task_TAM_EscalateToKAM" />
@@ -82,6 +86,14 @@
       <bpmndi:BPMNShape id="Task_KAM_EngageMerchant_di" bpmnElement="Task_KAM_EngageMerchant">
         <dc:Bounds x="675" y="220" width="100" height="80" />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_01shjin_di" bpmnElement="Activity_01shjin">
+        <dc:Bounds x="400" y="220" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0c92n10_di" bpmnElement="Activity_0c92n10">
+        <dc:Bounds x="1050" y="220" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Participant_TAM_Simple_di" bpmnElement="Participant_TAM_Simple" isHorizontal="true">
         <dc:Bounds x="160" y="320" width="1280" height="260" />
         <bpmndi:BPMNLabel />
@@ -104,12 +116,6 @@
       <bpmndi:BPMNShape id="Task_TAM_SupportIntegration_di" bpmnElement="Task_TAM_SupportIntegration">
         <dc:Bounds x="550" y="450" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Gateway_TAM_MerchantResponsive_di" bpmnElement="Gateway_TAM_MerchantResponsive" isMarkerVisible="true">
-        <dc:Bounds x="700" y="465" width="50" height="50" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="695" y="525" width="60" height="27" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Task_TAM_Certification_di" bpmnElement="Task_TAM_Certification">
         <dc:Bounds x="800" y="450" width="100" height="80" />
       </bpmndi:BPMNShape>
@@ -129,6 +135,12 @@
         <dc:Bounds x="1352" y="472" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="1325" y="515" width="90" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_TAM_MerchantResponsive_di" bpmnElement="Gateway_TAM_MerchantResponsive" isMarkerVisible="true">
+        <dc:Bounds x="700" y="465" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="695" y="525" width="60" height="27" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Task_TAM_EscalateToKAM_di" bpmnElement="Task_TAM_EscalateToKAM">
@@ -232,6 +244,16 @@
       <bpmndi:BPMNEdge id="Flow_003nwaz_di" bpmnElement="Flow_003nwaz">
         <di:waypoint x="850" y="530" />
         <di:waypoint x="850" y="620" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0vtf1rr_di" bpmnElement="Flow_0vtf1rr">
+        <di:waypoint x="370" y="450" />
+        <di:waypoint x="370" y="375" />
+        <di:waypoint x="450" y="375" />
+        <di:waypoint x="450" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_05m30jo_di" bpmnElement="Flow_05m30jo">
+        <di:waypoint x="1100" y="300" />
+        <di:waypoint x="1100" y="450" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
